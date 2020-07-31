@@ -1,16 +1,17 @@
-import React from 'react';
+import React from 'react'
 
-import PageDefault from '../../../components/PageDefault'
+import PageDefault from '../../../components/PageDefault';
 import { Link } from 'react-router-dom';
-import FormField from '../../../components/FormField';
+import FormField from '../../../components/FormField'
+import Button from '../../../components/Button';
 
 function CadastroCategoria() {  
     const [categorias, setCategorias] = React.useState([])
 
     const valorInicial = {
-        nome: 'Nome inicial',
-        descricao: 'Descricao inicial',
-        cor: '#000000'
+        nome: '',
+        descricao: '',
+        cor: ''
     }
 
     const [values, setValues] = React.useState(valorInicial);
@@ -30,6 +31,17 @@ function CadastroCategoria() {
         )
     }
 
+    React.useEffect(()=>{
+        const URL = 'http://localhost:8080/categorias'
+        fetch(URL).then(async (resp)=>{
+            const resposta = await resp.json()
+            setCategorias([
+                ...resposta, 
+            ])
+        })
+        
+    });
+
     return (
         <PageDefault>
             <h1> Pagina de cadastro de Categoria: {values.nome}</h1>
@@ -41,12 +53,12 @@ function CadastroCategoria() {
                 ])
                 setValues(valorInicial)
             }}>
-                <FormField label= 'Nome da Categoria:' type ='text' name='nome' value={values.nome}  onChange={handler}/>
-                <FormField label= 'Descricao:' type ='text' name='descricao' value={values.descricao}  onChange={handler}/>
+                <FormField label= 'Nome da Categoria:' name='nome' value={values.nome}  onChange={handler}/>
+                <FormField label= 'Descricao:' type ='textarea' name='descricao' value={values.descricao}  onChange={handler}/>
                 <FormField label= 'Cor:' type ='color' name='cor' value={values.cor}  onChange={handler}/>
  
                 <div>
-                    <button>Cadastrar</button>
+                    <Button>Cadastrar</Button>
                 </div>
                 
             </form>
@@ -54,7 +66,7 @@ function CadastroCategoria() {
             <ul>
                 {categorias.map((categoria,indice)=>{
                     return(
-                        <li key={`${categoria}${indice}`}>
+                        <li key={`${categoria.nome}`}>
                             {categoria.nome}
                         </li>
                     )
@@ -63,7 +75,7 @@ function CadastroCategoria() {
                 }
             </ul>
             
-            <Link to='/'>
+            <Link to='/home'>
                 Ir para Home
             </Link>
 

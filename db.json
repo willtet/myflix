@@ -1,0 +1,8 @@
+{
+    "categorias": [{
+        "id" : "1",
+        "nome": "Front End",
+        "descricao": "Curso de Front end",
+        "cor": "#111111"
+    }]
+}
