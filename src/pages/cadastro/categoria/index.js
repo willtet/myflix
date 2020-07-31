@@ -1,4 +1,4 @@
-import React from 'react'
+import React ,{useEffect} from 'react'
 
 import PageDefault from '../../../components/PageDefault';
 import { Link } from 'react-router-dom';
@@ -31,16 +31,19 @@ function CadastroCategoria() {
         )
     }
 
-    React.useEffect(()=>{
-        const URL = 'http://localhost:8080/categorias'
+    useEffect(()=>{
+        const URL = 'https://alura-myflix.herokuapp.com/categorias';
         fetch(URL).then(async (resp)=>{
-            const resposta = await resp.json()
-            setCategorias([
-                ...resposta, 
-            ])
-        })
+            if(resp.ok){
+                const resposta = await resp.json();
+                setCategorias(
+                  resposta, 
+                )
+            return
+            }
+        });
         
-    });
+    },[]);
 
     return (
         <PageDefault>
