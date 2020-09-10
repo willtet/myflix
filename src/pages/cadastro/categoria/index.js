@@ -1,9 +1,10 @@
 import React ,{useEffect} from 'react'
-
+import useForm from '../../../hooks/useForm'
 import PageDefault from '../../../components/PageDefault';
 import { Link } from 'react-router-dom';
 import FormField from '../../../components/FormField'
 import Button from '../../../components/Button';
+
 
 function CadastroCategoria() {  
     const [categorias, setCategorias] = React.useState([])
@@ -14,22 +15,9 @@ function CadastroCategoria() {
         cor: ''
     }
 
-    const [values, setValues] = React.useState(valorInicial);
+    const { values, handler, clearForm }= useForm(valorInicial)
 
-    function setValue(chave,valor){
-        setValues({
-            ...values,
-            [chave] : valor
-        })
-    }
-
-    function handler(info){
-        const {value } = info.target;
-        setValue(
-            info.target.getAttribute("name"),
-            value
-        )
-    }
+    
 
     useEffect(()=>{
         const URL = 'https://alura-myflix.herokuapp.com/categorias';
@@ -52,17 +40,16 @@ function CadastroCategoria() {
             <form onSubmit={function handlerSubmit(info){
                 info.preventDefault();
                 setCategorias([
-                    ...categorias,values
+                    ...categorias,
+                    values
                 ])
-                setValues(valorInicial)
+                clearForm()
             }}>
                 <FormField label= 'Nome da Categoria:' name='nome' value={values.nome}  onChange={handler}/>
                 <FormField label= 'Descricao:' type ='textarea' name='descricao' value={values.descricao}  onChange={handler}/>
                 <FormField label= 'Cor:' type ='color' name='cor' value={values.cor}  onChange={handler}/>
  
-                <div>
-                    <Button>Cadastrar</Button>
-                </div>
+                <Button>Cadastrar</Button>
                 
             </form>
 
@@ -78,7 +65,7 @@ function CadastroCategoria() {
                 }
             </ul>
             
-            <Link to='/home'>
+            <Link to='/'>
                 Ir para Home
             </Link>
 
